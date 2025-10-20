@@ -1,15 +1,15 @@
-# class Node:
+#Class Node
 class Node:
     def __init__(self, value):
         self.value = value
         self.next = None
         
-# class LinkedList:
+#Class LinkedList
 class LinkedList:
-    def __init__(self,value):
-        self.new_node = Node(value)
-        self.head = self.new_node
-        self.tail = self.new_node
+    def __init__(self, value):
+        new_node = Node(value)
+        self.head = new_node
+        self.tail = new_node
         self.length = 1
 
     def make_empty(self):
@@ -22,7 +22,7 @@ class LinkedList:
         while temp is not None:
             print(temp.value)
             temp = temp.next
-    
+        
     def append(self, value):
         new_node = Node(value)
         if self.length == 0:
@@ -31,8 +31,8 @@ class LinkedList:
         else:
             self.tail.next = new_node
             self.tail = new_node
-        
         self.length += 1
+        return True
 
     def pop(self):
         if self.length == 0:
@@ -48,7 +48,7 @@ class LinkedList:
         if self.length == 0:
             self.head = None
             self.tail = None
-        return temp.value
+        return temp
 
     def prepend(self, value):
         new_node = Node(value)
@@ -60,17 +60,62 @@ class LinkedList:
             self.head = new_node
         self.length += 1
         return True
+
     def pop_first(self):
         if self.length == 0:
             return None
         temp = self.head
         self.head = self.head.next
-        temp.next = None  
+        temp.next = None
         self.length -= 1
         if self.length == 0:
             self.tail = None
         return temp
+
+    def get(self, index):
+        if index < 0 or index >= self.length:
+            return None
+        temp = self.head
+        for _ in range(index):
+            temp = temp.next
+        return temp
+        
+    def set_value(self, index, value):
+        temp = self.get(index)
+        if temp:
+            temp.value = value
+            return True
+        return False
     
+    def insert(self, index, value):
+        if index < 0 or index > self.length:
+            return False
+        if index == 0:
+            return self.prepend(value)
+        if index == self.length:
+            return self.append(value)
+        new_node = Node(value)
+        temp = self.get(index - 1)
+        new_node.next = temp.next
+        temp.next = new_node
+        self.length += 1   
+        return True
+
+    def remove(self, index):
+        if index < 0 or index >= self.length:
+            return None
+        if index == 0:
+            return self.pop_first()
+        if index == self.length-1:
+            return self.pop()
+        prev = self.get(index-1)
+        temp = prev.next 
+        prev.next = temp.next
+        temp.next = None
+        self.length -= 1
+        return temp
+    
+
 my_linked_list = LinkedList(1)
 my_linked_list.make_empty()
 
@@ -99,5 +144,59 @@ print('Length:', my_linked_list.length, '\n')
 print('Linked List:')
 my_linked_list.print_list()
 
-print(my_linked_list.pop_first().value)
-print(my_linked_list.pop_first().value)
+print('Poping first element : ',my_linked_list.pop_first().value)
+print('Linked List after pop first:')
+my_linked_list.print_list()
+
+my_linked_list.append(7)
+my_linked_list.append(2)
+print('Linked List:')
+my_linked_list.print_list()
+
+
+print('Get value of index : 1 is ',my_linked_list.get(2))
+
+print('LL before set_value():')
+my_linked_list.print_list()
+
+my_linked_list.set_value(1,4)
+
+print('\nLL after set_value():')
+my_linked_list.print_list()
+
+print('LL before insert():')
+my_linked_list.print_list()
+
+
+my_linked_list.insert(1,2)
+
+print('\nLL after insert(2) in middle:')
+my_linked_list.print_list()
+
+
+my_linked_list.insert(0,0)
+
+print('\nLL after insert(0) at beginning:')
+my_linked_list.print_list()
+
+
+my_linked_list.insert(4,4)
+
+print('\nLL after insert(4) at end:')
+my_linked_list.print_list()
+
+
+print('\nRemoved node:')
+print(my_linked_list.remove(2).value)
+print('LL after remove() in middle:')
+my_linked_list.print_list()
+
+print('\nRemoved node:')
+print(my_linked_list.remove(0).value)
+print('LL after remove() of first node:')
+my_linked_list.print_list()
+
+print('\nRemoved node:')
+print(my_linked_list.remove(2).value)
+print('LL after remove() of last node:')
+my_linked_list.print_list()
