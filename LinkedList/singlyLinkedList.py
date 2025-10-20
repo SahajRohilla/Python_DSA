@@ -114,6 +114,17 @@ class LinkedList:
         temp.next = None
         self.length -= 1
         return temp
+    def reverse(self):
+        temp = self.head
+        self.head = self.tail
+        self.tail = temp
+        before = None
+        after = temp.next
+        for _ in range(self.length):
+            after = temp.next
+            temp.next = before
+            before = temp
+            temp = after
     
 
 my_linked_list = LinkedList(1)
@@ -200,3 +211,12 @@ print('\nRemoved node:')
 print(my_linked_list.remove(2).value)
 print('LL after remove() of last node:')
 my_linked_list.print_list()
+
+print('LL before reverse():')
+my_linked_list.print_list()
+
+my_linked_list.reverse()
+
+print('\nLL after reverse():')
+my_linked_list.print_list()
+
